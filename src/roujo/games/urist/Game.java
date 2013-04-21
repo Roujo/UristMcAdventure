@@ -4,6 +4,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 
 import roujo.games.urist.data.GameConfig;
+import roujo.games.urist.entities.Player;
 import roujo.games.urist.input.KeyboardInput;
 import roujo.games.urist.ui.Drawer;
 import roujo.games.urist.ui.GraphicsHandler;
@@ -13,6 +14,7 @@ public class Game {
 	private GraphicsHandler graphicsHandler;
 	private KeyboardInput keyboardInput;
 	private boolean running;
+	private Player p1, p2;
 
 	public Game() {
 		this.graphicsHandler = GraphicsHandler.getInstance();
@@ -25,6 +27,10 @@ public class Game {
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(keyboardInput);
+		
+		// TODO: Move Entities to some GameState class
+		p1 = new Player(Character.P1, 100, 100);
+		p2 = new Player(Character.P2, 700, 700);
 		
 		running = true;
 		while(running){
@@ -51,14 +57,21 @@ public class Game {
 			running = false;
 			return;
 		}
+		
+		if(keyboardInput.keyDown(KeyEvent.VK_LEFT)) {
+			p1.setX(p1.getX() - 10);
+		}
+		
+		if(keyboardInput.keyDown(KeyEvent.VK_A)) {
+			p2.setX(p2.getX() - 10);
+		}
 	}
 	
 	private void drawScreen() {
 		Drawer drawer = graphicsHandler.getDrawer();
 		drawer.init();
-		int i = 0;
-		for(Character c : Character.values())
-			drawer.draw(c, ++i * 150, i * 150);
+		drawer.draw(p1);
+		drawer.draw(p2);
 		drawer.commit();
 		graphicsHandler.getGameWindow().draw();
 	}
