@@ -1,9 +1,9 @@
 package roujo.games.urist.input;
 
+import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class KeyboardInput implements KeyListener {
+public class KeyboardInput implements KeyEventDispatcher {
 
 	private static final int KEY_COUNT = 256;
 
@@ -53,21 +53,9 @@ public class KeyboardInput implements KeyListener {
 		return keys[keyCode] == KeyState.ONCE;
 	}
 
-	public synchronized void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		if (keyCode >= 0 && keyCode < KEY_COUNT) {
-			currentKeys[keyCode] = true;
-		}
-	}
-
-	public synchronized void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		if (keyCode >= 0 && keyCode < KEY_COUNT) {
-			currentKeys[keyCode] = false;
-		}
-	}
-
-	public void keyTyped(KeyEvent e) {
-		// Not needed
-	}
+	@Override
+    public boolean dispatchKeyEvent(KeyEvent e) {
+		currentKeys[e.getKeyCode()] = (e.getID() == KeyEvent.KEY_PRESSED);
+		return true;
+    }
 }
