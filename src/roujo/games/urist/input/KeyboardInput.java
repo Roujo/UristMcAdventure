@@ -8,9 +8,10 @@ public class KeyboardInput implements KeyEventDispatcher {
 	private static final int KEY_COUNT = 256;
 
 	private enum KeyState {
-		RELEASED, // Not down
-		PRESSED, // Down, but not the first time
-		ONCE // Down for the first time
+		UP, // Up, but not for the first time
+		DOWN, // Down, but not the first time
+		PRESSED, // Down for the first time
+		RELEASED // Up, just released
 	}
 
 	// Current state of the keyboard
@@ -23,7 +24,7 @@ public class KeyboardInput implements KeyEventDispatcher {
 		currentKeys = new boolean[KEY_COUNT];
 		keys = new KeyState[KEY_COUNT];
 		for (int i = 0; i < KEY_COUNT; ++i) {
-			keys[i] = KeyState.RELEASED;
+			keys[i] = KeyState.UP;
 		}
 	}
 
@@ -32,25 +33,31 @@ public class KeyboardInput implements KeyEventDispatcher {
 			// Set the key state
 			if (currentKeys[i]) {
 				// If the key is down now, but was not
-				// down last frame, set it to ONCE,
-				// otherwise, set it to PRESSED
-				if (keys[i] == KeyState.RELEASED)
-					keys[i] = KeyState.ONCE;
-				else
-					keys[i] = KeyState.PRESSED;
+				// down last frame, set it to DOWN_ONCE,
+				// otherwise, set it to DOWN
+				keys[i] = (keys[i] == KeyState.UP ? KeyState.PRESSED : KeyState.DOWN);
 			} else {
-				keys[i] = KeyState.RELEASED;
+				keys[i] = (keys[i] == KeyState.DOWN ? KeyState.RELEASED : KeyState.UP);
 			}
 		}
 	}
 
 	public boolean keyDown(int keyCode) {
-		return keys[keyCode] == KeyState.ONCE
-				|| keys[keyCode] == KeyState.PRESSED;
+		return keys[keyCode] == KeyState.PRESSED
+				|| keys[keyCode] == KeyState.DOWN;
 	}
 
-	public boolean keyDownOnce(int keyCode) {
-		return keys[keyCode] == KeyState.ONCE;
+	public boolean keyPressed(int keyCode) {
+		return keys[keyCode] == KeyState.PRESSED;
+	}
+	
+	public boolean keyUp(int keyCode) {
+		return keys[keyCode] == KeyState.UP
+				|| keys[keyCode] == KeyState.RELEASED;
+	}
+	
+	public boolean keyReleased(int keyCode) {
+		return keys[keyCode] == KeyState.RELEASED;
 	}
 
 	@Override
