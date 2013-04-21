@@ -9,7 +9,6 @@ import roujo.lib.gui.windows.GraphicWindow;
 public class Game {
 	private GraphicWindow window;
 	private GraphicsHandler graphicsHandler;
-	private Drawer drawer;
 
 	public void start() {
 		GameConfig.getInstance().load();
@@ -17,9 +16,6 @@ public class Game {
 		graphicsHandler = GraphicsHandler.getInstance();
 		graphicsHandler.init();
 		window = graphicsHandler.getGameWindow();
-		
-		drawer = graphicsHandler.getDrawer();
-		drawer.init();
 		
 		while(true){
 			getInput();
@@ -37,6 +33,8 @@ public class Game {
 	}
 	
 	private void drawScreen() {
+		Drawer drawer = graphicsHandler.getDrawer();
+		drawer.init();
 		int i = 0;
 		for(Character c : Character.values())
 			drawer.draw(c, ++i * 150, i * 150);
