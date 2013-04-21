@@ -1,4 +1,4 @@
-package roujo.games.urist.ui;
+package roujo.games.urist.ui.sprites;
 
 public interface Sprite {
 	int getSize();

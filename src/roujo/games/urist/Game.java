@@ -1,14 +1,16 @@
 package roujo.games.urist;
 
 import roujo.games.urist.data.GameConfig;
-import roujo.games.urist.ui.Character;
+import roujo.games.urist.input.KeyboardInput;
 import roujo.games.urist.ui.Drawer;
 import roujo.games.urist.ui.GraphicsHandler;
+import roujo.games.urist.ui.sprites.Character;
 import roujo.lib.gui.windows.GraphicWindow;
 
 public class Game {
 	private GraphicWindow window;
 	private GraphicsHandler graphicsHandler;
+	private KeyboardInput keyboardInput;
 
 	public void start() {
 		GameConfig.getInstance().load();
@@ -16,6 +18,7 @@ public class Game {
 		graphicsHandler = GraphicsHandler.getInstance();
 		graphicsHandler.init();
 		window = graphicsHandler.getGameWindow();
+		window.addKeyListener(keyboardInput);
 		
 		while(true){
 			getInput();

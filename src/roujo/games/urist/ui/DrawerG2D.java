@@ -2,6 +2,7 @@ package roujo.games.urist.ui;
 
 import java.awt.Graphics2D;
 
+import roujo.games.urist.ui.sprites.Sprite;
 import roujo.lib.gui.windows.GraphicWindow;
 
 public class DrawerG2D implements Drawer {
