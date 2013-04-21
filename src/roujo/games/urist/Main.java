@@ -13,23 +13,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Hello, world!");
-		
-		GameConfig.getInstance().load();
-		
-		GraphicsHandler gh = GraphicsHandler.getInstance();
-		gh.init();
-		GraphicWindow window = gh.getGameWindow();
-		
-		Drawer d = gh.getDrawer();
-		d.init();
-		int i = 0;
-		for(Character c : Character.values())
-			d.draw(c, ++i * 150, i * 150);
-		d.commit();
-		
-		while(true){
-			window.draw();
-		}
+	
+		new Game().start();
 	}
 
 }
