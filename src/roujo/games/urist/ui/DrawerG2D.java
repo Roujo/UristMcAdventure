@@ -2,6 +2,7 @@ package roujo.games.urist.ui;
 
 import java.awt.Graphics2D;
 
+import roujo.games.urist.entities.Entity;
 import roujo.games.urist.ui.sprites.Sprite;
 import roujo.lib.gui.windows.GraphicWindow;
 
@@ -26,6 +27,11 @@ public class DrawerG2D implements Drawer {
 		int row = sprite.getRowIndex();
 		int column = sprite.getColumnIndex();
 		g2d.drawImage(imageStore.getSpriteSheet(sprite.getSheetName()), x, y, x + size - 1, y + size - 1, column * size, row * size, (column + 1) * size, (row + 1) * size, gameWindow);
+	}
+	
+	@Override
+	public void draw(Entity entity) {
+		draw(entity.getSprite(), entity.getX(), entity.getY());
 	}
 
 	@Override
