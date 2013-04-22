@@ -5,11 +5,13 @@ import roujo.games.urist.ui.sprites.Sprite;
 public class Entity {
 	private Sprite sprite;
 	private int x, y;
+	private boolean isVisible;
 	
 	public Entity(Sprite sprite, int x, int y) {
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
+		this.isVisible = false;
 	}
 
 	public Sprite getSprite() {
@@ -34,5 +36,13 @@ public class Entity {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 }
