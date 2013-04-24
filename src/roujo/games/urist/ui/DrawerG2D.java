@@ -26,7 +26,7 @@ public class DrawerG2D implements Drawer {
 		int size = sprite.getSize();
 		int row = sprite.getRowIndex();
 		int column = sprite.getColumnIndex();
-		g2d.drawImage(imageStore.getSpriteSheet(sprite.getSheetName()), x, y, x + size - 1, y + size - 1, column * size, row * size, (column + 1) * size, (row + 1) * size, gameWindow);
+		g2d.drawImage(imageStore.getSpriteSheet(sprite.getSheetName()), x * size, y * size, (x + 1) * size - 1, (y + 1) * size - 1, column * size, row * size, (column + 1) * size, (row + 1) * size, gameWindow);
 	}
 	
 	@Override
