@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import roujo.games.urist.data.GameConfig;
 import roujo.games.urist.data.GameState;
 import roujo.games.urist.entities.Entity;
-import roujo.games.urist.entities.Player;
+import roujo.games.urist.entities.PlayerEntity;
 import roujo.games.urist.entities.util.EntityContainer;
 import roujo.games.urist.input.KeyboardInput;
 import roujo.games.urist.ui.Drawer;
@@ -18,7 +18,7 @@ public class Game {
 	private KeyboardInput keyboardInput;
 	private boolean running;
 	private GameState gameState;
-	private Player p1, p2;
+	private PlayerEntity p1, p2;
 
 	public Game() {
 		this.graphicsHandler = GraphicsHandler.getInstance();
@@ -32,13 +32,13 @@ public class Game {
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(keyboardInput);
 		
-		p1 = new Player(Character.P1, 10, 10);
+		p1 = new PlayerEntity(Character.P1, 10, 10);
 		p1.setVisible(true);
-		p2 = new Player(Character.P2, 40, 40);
+		p2 = new PlayerEntity(Character.P2, 40, 40);
 		p2.setVisible(true);
 		
 		gameState = GameState.getInstance();
-		EntityContainer<Player> players = gameState.getPlayerContainer();
+		EntityContainer<PlayerEntity> players = gameState.getPlayerContainer();
 		players.add(p1);
 		players.add(p2);
 		
@@ -75,6 +75,10 @@ public class Game {
 		if(keyboardInput.keyDown(KeyEvent.VK_A)) {
 			p2.setX(p2.getX() - 1);
 		}
+	}
+	
+	private void movePlayer(PlayerEntity player) {
+		
 	}
 	
 	private void drawScreen() {

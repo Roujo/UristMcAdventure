@@ -1,7 +1,7 @@
 package roujo.games.urist.entities;
 
 public enum EntityType {
-	Player(Player.class);
+	Player(PlayerEntity.class);
 	
 	private Class<? extends Entity> entityClass;
 	

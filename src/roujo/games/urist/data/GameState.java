@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import roujo.games.urist.entities.Entity;
-import roujo.games.urist.entities.Player;
+import roujo.games.urist.entities.PlayerEntity;
 import roujo.games.urist.entities.util.EntityContainer;
 
 public class GameState {
@@ -16,13 +16,13 @@ public class GameState {
 	}
 	
 	private List<EntityContainer<? extends Entity>> entityContainerList;
-	private EntityContainer<Player> players;
+	private EntityContainer<PlayerEntity> playerEntities;
 	private boolean[][] terrain;
 	
 	private GameState() {
 		entityContainerList = new ArrayList<EntityContainer<? extends Entity>>();
-		players = new EntityContainer<Player>();
-		entityContainerList.add(players);
+		playerEntities = new EntityContainer<PlayerEntity>();
+		entityContainerList.add(playerEntities);
 		
 		terrain = new boolean[50][50];
 		for(boolean[] row : terrain)
@@ -33,8 +33,8 @@ public class GameState {
 		return entityContainerList;
 	}
 	
-	public EntityContainer<Player> getPlayerContainer() {
-		return players;
+	public EntityContainer<PlayerEntity> getPlayerContainer() {
+		return playerEntities;
 	}
 	
 	public boolean[][] getTerrain() {
