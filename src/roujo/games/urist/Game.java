@@ -1,13 +1,16 @@
 package roujo.games.urist;
 
 import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
 
 import roujo.games.urist.data.GameConfig;
 import roujo.games.urist.data.GameState;
+import roujo.games.urist.data.Player;
 import roujo.games.urist.entities.Entity;
 import roujo.games.urist.entities.PlayerEntity;
 import roujo.games.urist.entities.util.EntityContainer;
+import roujo.games.urist.input.Input;
+import roujo.games.urist.input.KeyConfig;
+import roujo.games.urist.input.KeyDefaults;
 import roujo.games.urist.input.KeyboardInput;
 import roujo.games.urist.ui.Drawer;
 import roujo.games.urist.ui.GraphicsHandler;
@@ -18,7 +21,6 @@ public class Game {
 	private KeyboardInput keyboardInput;
 	private boolean running;
 	private GameState gameState;
-	private PlayerEntity p1, p2;
 
 	public Game() {
 		this.graphicsHandler = GraphicsHandler.getInstance();
@@ -32,15 +34,17 @@ public class Game {
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(keyboardInput);
 		
-		p1 = new PlayerEntity(Character.P1, 10, 10);
-		p1.setVisible(true);
-		p2 = new PlayerEntity(Character.P2, 40, 40);
-		p2.setVisible(true);
+		gameState = GameState.getInstance();
+		PlayerEntity p1Entity = new PlayerEntity(Character.P1, 10, 10);
+		p1Entity.setVisible(true);
+		Player p1 = new Player("Player 1", KeyDefaults.Arrows.getKeyConfig(), p1Entity);
+		gameState.addPlayer(p1);
 		
 		gameState = GameState.getInstance();
-		EntityContainer<PlayerEntity> players = gameState.getPlayerContainer();
-		players.add(p1);
-		players.add(p2);
+		PlayerEntity p2Entity = new PlayerEntity(Character.P2, 40, 40);
+		p2Entity.setVisible(true);
+		Player p2 = new Player("Player 2", KeyDefaults.WASD.getKeyConfig(), p2Entity);
+		gameState.addPlayer(p2);
 		
 		running = true;
 		while(running){
@@ -63,22 +67,36 @@ public class Game {
 	}
 	
 	private void processGameLogic() {
-		if(keyboardInput.keyDown(KeyEvent.VK_ESCAPE)) {
-			running = false;
-			return;
-		}
-		
-		if(keyboardInput.keyDown(KeyEvent.VK_LEFT)) {
-			p1.setX(p1.getX() - 1);
-		}
-		
-		if(keyboardInput.keyDown(KeyEvent.VK_A)) {
-			p2.setX(p2.getX() - 1);
+		// Process Players
+		for(Player player : gameState.getPlayers()) {
+			KeyConfig config = player.getKeyConfig();
+			PlayerEntity entity = player.getEntity();
+			
+			if(checkIfKeyPressed(config, Input.Up)) {
+				entity.setY(entity.getY() - 1);
+			}
+			
+			if(checkIfKeyPressed(config, Input.Down)) {
+				entity.setY(entity.getY() + 1);
+			}
+			
+			if(checkIfKeyPressed(config, Input.Left)) {
+				entity.setX(entity.getX() - 1);
+			}
+			
+			if(checkIfKeyPressed(config, Input.Right)) {
+				entity.setX(entity.getX() + 1);
+			}
+			
+			if(checkIfKeyPressed(config, Input.Quit)) {
+				running = false;
+				return;
+			}
 		}
 	}
 	
-	private void movePlayer(PlayerEntity player) {
-		
+	private boolean checkIfKeyPressed(KeyConfig config, Input input) {
+		return config.hasKey(input) && keyboardInput.keyDown(config.getKey(input));
 	}
 	
 	private void drawScreen() {
