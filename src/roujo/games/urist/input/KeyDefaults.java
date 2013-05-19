@@ -1,6 +1,8 @@
 package roujo.games.urist.input;
 
 import java.awt.event.KeyEvent;
+import java.util.Map;
+import java.util.TreeMap;
 
 public enum KeyDefaults{
 	Arrows(
@@ -23,7 +25,14 @@ public enum KeyDefaults{
 	private final KeyConfig keyConfig;
 	
 	private KeyDefaults(int up, int down, int left, int right, int action, int quit){
-		keyConfig = new KeyConfig(new int[]{up, down, left, right, action, quit});
+		Map<Input, Integer> keyMap = new TreeMap<Input, Integer>();
+		keyMap.put(Input.Up, up);
+		keyMap.put(Input.Down, down);
+		keyMap.put(Input.Left, left);
+		keyMap.put(Input.Right, right);
+		keyMap.put(Input.Action, action);
+		keyMap.put(Input.Quit, quit);
+		keyConfig = new KeyConfig(keyMap);
 	}
 	
 	public KeyConfig getKeyConfig(){
