@@ -15,6 +15,7 @@ import roujo.games.urist.input.KeyboardInput;
 import roujo.games.urist.ui.Drawer;
 import roujo.games.urist.ui.GraphicsHandler;
 import roujo.games.urist.ui.sprites.Character;
+import roujo.games.urist.ui.sprites.Sprite;
 
 public class Game {
 	private GraphicsHandler graphicsHandler;
@@ -88,6 +89,10 @@ public class Game {
 				entity.setX(entity.getX() + 1);
 			}
 			
+			if(checkIfKeyPressed(config, Input.Action)) {
+				// Do whatever action you want to
+			}
+			
 			if(checkIfKeyPressed(config, Input.Quit)) {
 				running = false;
 				return;
@@ -104,10 +109,11 @@ public class Game {
 		drawer.init();
 		
 		// Get the terrain first
-		boolean[][] origTerrain = gameState.getTerrain();
-		boolean[][] terrain = new boolean[origTerrain[0].length][];
-		for(int y = 0; y < origTerrain.length; ++y)
-			terrain[y] = origTerrain[y].clone();
+		Sprite[][] terrain = gameState.getTerrain();
+		boolean[][] terrainMask = new boolean[terrain.length][terrain[0].length];
+		for(int y = 0; y < terrainMask.length; ++y)
+			for(int x = 0; x < terrainMask[0].length; ++x)
+				terrainMask[y][x] = terrain[y][x] != null;
 			
 		
 		// Here we go: Master Draw Loop
@@ -120,16 +126,16 @@ public class Game {
 					// Draw it
 					drawer.draw(entity);
 					// And flag the terrain so that it won't get drawn over it
-					terrain[entity.getY()][entity.getX()] = false;
+					terrainMask[entity.getY()][entity.getX()] = false;
 				}
 			}
 		}
 		
 		// Now, it's terrain drawing time
-		for(int y = 0; y < terrain.length; ++y) {
-			for(int x = 0; x < terrain[y].length; ++x) {
-				if(terrain[y][x]) {
-					drawer.draw(Character.P3, x, y);
+		for(int y = 0; y < terrainMask.length; ++y) {
+			for(int x = 0; x < terrainMask[y].length; ++x) {
+				if(terrainMask[y][x]) {
+					drawer.draw(terrain[y][x], x, y);
 				}
 			}
 		}

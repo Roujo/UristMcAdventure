@@ -1,15 +1,17 @@
 package roujo.games.urist.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import roujo.games.urist.entities.Entity;
 import roujo.games.urist.entities.PlayerEntity;
 import roujo.games.urist.entities.util.EntityContainer;
+import roujo.games.urist.ui.sprites.Sprite;
+import roujo.games.urist.ui.sprites.Terrain;
 
 public class GameState {
 	private static GameState INSTANCE = new GameState();
@@ -20,7 +22,8 @@ public class GameState {
 	
 	private List<EntityContainer<? extends Entity>> entityContainerList;
 	private EntityContainer<PlayerEntity> playerEntities;
-	private boolean[][] terrain;
+	
+	private Sprite[][] terrain;
 	
 	private Map<String, Player> playerMap;
 	
@@ -29,11 +32,14 @@ public class GameState {
 		playerEntities = new EntityContainer<PlayerEntity>();
 		entityContainerList.add(playerEntities);
 		
-		playerMap = new TreeMap<String, Player>();
+		playerMap = new TreeMap<String, Player>();		
 		
-		terrain = new boolean[50][50];
-		for(boolean[] row : terrain)
-			Arrays.fill(row, true);
+		Terrain[] terrainSprites = Terrain.values();
+		Random random = new Random();
+		terrain = new Sprite[50][50];
+		for(int y = 0; y < terrain.length; ++y)
+			for(int x = 0; x < terrain[0].length; ++x)
+				terrain[y][x] = terrainSprites[random.nextInt(terrainSprites.length)];
 	}
 	
 	public List<EntityContainer<? extends Entity>> getEntityContainerList() {
@@ -49,7 +55,7 @@ public class GameState {
 		return playerMap.values();
 	}
 	
-	public boolean[][] getTerrain() {
+	public Sprite[][] getTerrain() {
 		return terrain;
 	}
 }
